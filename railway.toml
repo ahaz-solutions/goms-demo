@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+buildCommand = "bash build.sh"
+
+[deploy]
+startCommand = "gunicorn goms_backend.wsgi --workers 2 --threads 2 --timeout 60 --log-file -"
+healthcheckPath = "/api/"
+restartPolicyType = "ON_FAILURE"
