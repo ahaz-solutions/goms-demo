@@ -2,6 +2,11 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
+from dotenv import load_dotenv
+
+# Load .env file for local development
+# On Railway/production, env vars are set directly — load_dotenv() is a no-op
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

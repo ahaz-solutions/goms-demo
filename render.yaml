@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: goms-backend
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate --no-input"
+    startCommand: "gunicorn goms_backend.wsgi --workers 2 --threads 2 --timeout 60 --log-file -"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: goms-demo.onrender.com
+      - key: DATABASE_URL
+        value: postgresql://postgres:HbTtLPpwOOFyCeLmIWTdymByvEDKpdrX@postgres.railway.internal:5432/railway
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://goms-demo-pi.vercel.app
+      - key: USE_S3
+        value: "False"
+    healthCheckPath: /api/
