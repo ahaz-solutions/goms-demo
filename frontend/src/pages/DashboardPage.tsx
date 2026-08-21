@@ -246,7 +246,8 @@ export default function DashboardPage() {
       api.get('/orders/?ordering=-created_at'),
     ]).then(([statsRes, ordersRes]) => {
       setStats(statsRes.data)
-      setOrders(ordersRes.data.results || ordersRes.data)
+      const ordersData = ordersRes.data
+      setOrders(Array.isArray(ordersData) ? ordersData : (ordersData?.results ?? []))
     }).finally(() => setLoading(false))
   }, [])
 

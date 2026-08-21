@@ -132,7 +132,10 @@ export default function WalkInPage() {
   const isRush = deliveryDate < suggestedDate
 
   useEffect(() => {
-    api.get('/walkin/catalog/').then(res => setCatalog(res.data))
+    api.get('/walkin/catalog/').then(res => {
+      const data = res.data
+      setCatalog(Array.isArray(data) ? data : (data?.results ?? []))
+    }).catch(() => setCatalog([]))
   }, [])
 
   const getCat = (id: number | '') => catalog.find(c => c.id === id)

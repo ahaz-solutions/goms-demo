@@ -51,7 +51,10 @@ export default function NewOrderPage() {
   const isRush = deliveryDate < suggestedDate
 
   useEffect(() => {
-    api.get('/glass-catalog/').then(res => setCatalog(res.data.results || res.data))
+    api.get('/glass-catalog/').then(res => {
+      const data = res.data
+      setCatalog(Array.isArray(data) ? data : (data?.results ?? []))
+    })
   }, [])
 
   useEffect(() => {
