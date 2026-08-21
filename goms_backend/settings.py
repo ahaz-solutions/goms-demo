@@ -18,6 +18,9 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+# Always allow localhost for health checks
+if 'localhost' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 # ── Apps ──────────────────────────────────────────────────────────────────────
 
 INSTALLED_APPS = [
@@ -74,7 +77,11 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require='sslmode=require' in DATABASE_URL,
+        )
     }
 else:
     DATABASES = {
